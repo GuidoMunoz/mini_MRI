@@ -11,23 +11,23 @@ t = t - 10.11 * 10^(-3);
 
 T = t(2) - t(1);
 % Define filter specifications
-fs = 1/T;  % Sampling frequency (adjust as needed)
-Fpass1 = 425000;  % First passband frequency (Hz)
-Fpass2 = 429492;  % Second passband frequency (Hz)
-Fstop1 = 426025;  % First stopband frequency (Hz)
-Fstop2 = 428467;  % Second stopband frequency (Hz)
-Apass = 1;  % Passband ripple (dB)
-Astop = 40; % Stopband attenuation in dB
-%d = designfilt('bandstopiir', 'FilterOrder', 10, ...
+% fs = 1/T;  % Sampling frequency (adjust as needed)
+% Fpass1 = 425000;  % First passband frequency (Hz)
+% Fpass2 = 429492;  % Second passband frequency (Hz)
+% Fstop1 = 426025;  % First stopband frequency (Hz)
+% Fstop2 = 428467;  % Second stopband frequency (Hz)
+% Apass = 1;  % Passband ripple (dB)
+% Astop = 40; % Stopband attenuation in dB
+% d = designfilt('bandstopiir', 'FilterOrder', 10, ...
 %    'StopbandFrequency1', Fstop1, 'StopbandFrequency2', Fstop2, ...
 %    'PassbandFrequency1', Fpass1, 'PassbandFrequency2', Fpass2, ...
 %    'StopbandAttenuation', Astop, 'PassbandRipple', Apass, ...
 %    'SampleRate', fs);
-d = designfilt('bandstopiir', 'FilterOrder', 10, 'PassbandFrequency1', ...
+% d = designfilt('bandstopiir', 'FilterOrder', 10, 'PassbandFrequency1', ...
                Fpass1, 'PassbandFrequency2', Fpass2, 'PassbandRipple', ...
                Apass, 'SampleRate', fs*1);
 
-S_f = filter(d, S);
+% S_f = filter(d, S);
 
 % NUT = 1
 
@@ -37,7 +37,7 @@ u = (0:N-1)*U;
 
 % FT of signal
 fftc = @(x) fft(fftshift(x));
-Sk = fftc(S_f);
+Sk = fftc(S);
 %Filter definition and carrier frequency (fc)
 f = .4;
 
@@ -56,8 +56,8 @@ LPF = dsp.LowpassFilter('SampleRate',fs,...
                              'PassbandRipple',Rp,...
                              'StopbandAttenuation',Astop);
 %Demodulated signal
-ReS = LPF(cos(2*pi*fc*t) .* S_f);
-ImS = LPF(sin(2*pi*fc*t) .* S_f);
+ReS = LPF(cos(2*pi*fc*t) .* S);
+ImS = LPF(sin(2*pi*fc*t) .* S);
 S_lp = ReS-1i*ImS;
 
 a = (-8192/2 + 1):1:(8192/2 - 1);
